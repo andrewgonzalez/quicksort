@@ -13,7 +13,7 @@
 //    an error (any positive integer).
 void quicksort(int sortMe[], int leftIndex, int rightIndex) {
     if (leftIndex < rightIndex) {
-        int splitPosition = lomutoPartition(sortMe, leftIndex, rightIndex);
+        int splitPosition = hoarePartition(sortMe, leftIndex, rightIndex);
         quicksort(sortMe, leftIndex, splitPosition-1);
         quicksort(sortMe, splitPosition+1, rightIndex);
     }
@@ -34,17 +34,19 @@ int lomutoPartition(int partArr[], int leftIndex, int rightIndex) {
 
 int hoarePartition(int partArr[], int leftIndex, int rightIndex) {
     int pivot = partArr[leftIndex];
-    int i = leftIndex+1;
-    int j = rightIndex;
+    int i = leftIndex;
+    int j = rightIndex+1;
     while (i < j) {
-        while (partArr[i] < pivot) {
+        do {
             ++i;
-        }
-        while (partArr[j] > pivot) {
+        } while (partArr[i] < pivot);
+        do {
             --j;
-        }
-        swap(partArr, i, j);
+        } while (partArr[j] > pivot);
+        if (i >= leftIndex && j <= rightIndex)
+            swap(partArr, i, j);
     }
+    swap(partArr, i, j); // undo last swap when i >= j
     swap(partArr, leftIndex, j);
     return j;
 }
