@@ -18,7 +18,7 @@ int main() {
         std::cout << testArr[i] << std::endl;
     }
     std::cout << "\n\n\nStarting sort..." << std::endl;
-    quicksort(testArr, 0, 50-1);
+    quicksort(testArr, 0, 50-1, hoarePartition);
     for (int i = 0; i < 50; ++i) {
         std::cout << testArr[i] << std::endl;
     }

@@ -11,11 +11,11 @@
 // Input: Subarray of array sortMe[0..n-1], and the left and right indices.
 // Output: an int indicating successful completion (0) or an int indicating
 //    an error (any positive integer).
-void quicksort(int sortMe[], int leftIndex, int rightIndex) {
+void quicksort(int sortMe[], int leftIndex, int rightIndex, int (*partitionFunc)(int*,int,int)) {
     if (leftIndex < rightIndex) {
-        int splitPosition = hoarePartition(sortMe, leftIndex, rightIndex);
-        quicksort(sortMe, leftIndex, splitPosition-1);
-        quicksort(sortMe, splitPosition+1, rightIndex);
+        int splitPosition = partitionFunc(sortMe, leftIndex, rightIndex);
+        quicksort(sortMe, leftIndex, splitPosition-1, partitionFunc);
+        quicksort(sortMe, splitPosition+1, rightIndex, partitionFunc);
     }
 }
 
