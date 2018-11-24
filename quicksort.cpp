@@ -55,7 +55,7 @@ int hoarePartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex)
 
 
 // Return the leftIndex parameter to be used as the pivot index.
-// Input: an array of intergers and ints for the left and right indices respectively.
+// Input: an array of integers and ints for the left and right indices respectively.
 // Output: an int to be used as a pivot index.
 int basicPivot(int array[], int leftIndex, int rightIndex) {
     return leftIndex;
@@ -65,6 +65,10 @@ int randomPivot(int array[], int leftIndex, int rightIndex) {
     return 0;
 }
 
+
+// Find the median value of the left, right, and middle indices for an array.
+// Input, an array of integers and ints for the left and right indices respectively.
+// Output: an int to be used as a pivot index.
 int medianOfThree(int array[], int leftIndex, int rightIndex) {
     int middle = (leftIndex + rightIndex) / 2;
 
@@ -74,8 +78,11 @@ int medianOfThree(int array[], int leftIndex, int rightIndex) {
         swap(array, leftIndex, rightIndex);
     if (array[middle] > array[rightIndex])
         swap(array, middle, rightIndex);
-    return middle;
+    // put pivot in left spot
+    swap(array, leftIndex, middle);
+    return leftIndex;
 }
+
 
 int medianOfMedians(int array[], int leftIndex, int rightIndex) {
     return 0;
