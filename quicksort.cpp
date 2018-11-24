@@ -11,11 +11,13 @@
 // Input: Subarray of array sortMe[0..n-1], and the left and right indices.
 // Output: an int indicating successful completion (0) or an int indicating
 //    an error (any positive integer).
-void quicksort(int sortMe[], int leftIndex, int rightIndex, int (*partitionFunc)(int*,int,int,int)) {
+void quicksort(int sortMe[], int leftIndex, int rightIndex,
+        int (*partitionFunc)(int*,int,int,int), int (*pivotFunc)(int*,int,int)) {
     if (leftIndex < rightIndex) {
-        int splitPosition = partitionFunc(sortMe, leftIndex, rightIndex, leftIndex);
-        quicksort(sortMe, leftIndex, splitPosition-1, partitionFunc);
-        quicksort(sortMe, splitPosition+1, rightIndex, partitionFunc);
+        int pivotIndex = pivotFunc(sortMe, leftIndex, rightIndex);
+        int splitPosition = partitionFunc(sortMe, leftIndex, rightIndex, pivotIndex);
+        quicksort(sortMe, leftIndex, splitPosition-1, partitionFunc, pivotFunc);
+        quicksort(sortMe, splitPosition+1, rightIndex, partitionFunc, pivotFunc);
     }
 }
 
@@ -51,6 +53,35 @@ int hoarePartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex)
     return j;
 }
 
+
+// Return the leftIndex parameter to be used as the pivot index.
+// Input: an array of intergers and ints for the left and right indices respectively.
+// Output: an int to be used as a pivot index.
+int basicPivot(int array[], int leftIndex, int rightIndex) {
+    return leftIndex;
+}
+
+int randomPivot(int array[], int leftIndex, int rightIndex) {
+    return 0;
+}
+
+int medianOfThree(int array[], int leftIndex, int rightIndex) {
+    int middle = (leftIndex + rightIndex) / 2;
+
+    if (array[leftIndex] > array[middle])
+        swap(array, leftIndex, middle);
+    if (array[leftIndex] > array[rightIndex])
+        swap(array, leftIndex, rightIndex);
+    if (array[middle] > array[rightIndex])
+        swap(array, middle, rightIndex);
+    return middle;
+}
+
+int medianOfMedians(int array[], int leftIndex, int rightIndex) {
+    return 0;
+}
+
+
 void swap(int arr[], int currentIndex, int swapIndex) {
     // If the indices are the same don't bother swapping.
     // Not sure if this actually saves any work since an additional comparison
@@ -61,4 +92,3 @@ void swap(int arr[], int currentIndex, int swapIndex) {
     arr[currentIndex] = arr[swapIndex];
     arr[swapIndex] = temp;
 }
-
