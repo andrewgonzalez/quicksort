@@ -11,16 +11,16 @@
 // Input: Subarray of array sortMe[0..n-1], and the left and right indices.
 // Output: an int indicating successful completion (0) or an int indicating
 //    an error (any positive integer).
-void quicksort(int sortMe[], int leftIndex, int rightIndex, int (*partitionFunc)(int*,int,int)) {
+void quicksort(int sortMe[], int leftIndex, int rightIndex, int (*partitionFunc)(int*,int,int,int)) {
     if (leftIndex < rightIndex) {
-        int splitPosition = partitionFunc(sortMe, leftIndex, rightIndex);
+        int splitPosition = partitionFunc(sortMe, leftIndex, rightIndex, leftIndex);
         quicksort(sortMe, leftIndex, splitPosition-1, partitionFunc);
         quicksort(sortMe, splitPosition+1, rightIndex, partitionFunc);
     }
 }
 
-int lomutoPartition(int partArr[], int leftIndex, int rightIndex) {
-    int pivot = partArr[leftIndex];
+int lomutoPartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex) {
+    int pivot = partArr[pivotIndex];
     int current = leftIndex;
     for (int i = leftIndex + 1; i <= rightIndex; ++i) {
         if (partArr[i] < pivot) {
@@ -32,8 +32,8 @@ int lomutoPartition(int partArr[], int leftIndex, int rightIndex) {
     return current;
 }
 
-int hoarePartition(int partArr[], int leftIndex, int rightIndex) {
-    int pivot = partArr[leftIndex];
+int hoarePartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex) {
+    int pivot = partArr[pivotIndex];
     int i = leftIndex;
     int j = rightIndex+1;
     while (i < j) {

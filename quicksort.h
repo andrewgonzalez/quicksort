@@ -5,9 +5,9 @@
 #ifndef QUICKSORT_H
 #define QUICKSORT_H
 
-void quicksort(int sortMe[], int leftIndex, int rightIndex, int (*partitionFunc)(int*,int,int));
-int lomutoPartition(int partArr[], int leftIndex, int rightIndex);
-int hoarePartition(int partArr[], int leftIndex, int rightIndex);
+void quicksort(int sortMe[], int leftIndex, int rightIndex, int (*partitionFunc)(int*,int,int,int));
+int lomutoPartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex);
+int hoarePartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex);
 void swap(int arr[], int currentIndex, int swapIndex);
 
 #endif //QUICKSORT_H
