@@ -2,7 +2,6 @@
 // Created by Andrew Gonzalez on 11/20/18.
 //
 
-#include <iostream>
 #include "quicksort.h"
 
 
@@ -41,10 +40,10 @@ int hoarePartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex)
     while (i < j) {
         do {
             ++i;
-        } while (partArr[i] < pivot);
+        } while (partArr[i] < pivot && i < rightIndex);
         do {
             --j;
-        } while (partArr[j] > pivot);
+        } while (partArr[j] > pivot && j > leftIndex);
         swap(partArr, i, j);
     }
     swap(partArr, i, j); // undo last swap when i >= j
@@ -60,6 +59,10 @@ int basicPivot(int array[], int leftIndex, int rightIndex) {
     return leftIndex;
 }
 
+
+// Choose a random index within the subarray to be used as the pivot index.
+// Input: an array of integers and ints for the left and right indices respectively.
+// Output: an int to be used as a pivot index.
 int randomPivot(int array[], int leftIndex, int rightIndex) {
     // Generate a random number within the indices range
     std::random_device seed;
@@ -73,7 +76,7 @@ int randomPivot(int array[], int leftIndex, int rightIndex) {
 
 
 // Find the median value of the left, right, and middle indices for an array.
-// Input, an array of integers and ints for the left and right indices respectively.
+// Input: an array of integers and ints for the left and right indices respectively.
 // Output: an int to be used as a pivot index.
 int medianOfThree(int array[], int leftIndex, int rightIndex) {
     int middle = (leftIndex + rightIndex) / 2;
@@ -96,6 +99,9 @@ int medianOfMedians(int array[], int leftIndex, int rightIndex) {
 }
 
 
+// Swap the values of the array at the passed in indices.
+// Input: an array of integers and ints for the indices to be swapped.
+// Output: none
 void swap(int arr[], int currentIndex, int swapIndex) {
     // If the indices are the same don't bother swapping.
     // Not sure if this actually saves any work since an additional comparison
