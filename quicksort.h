@@ -5,6 +5,8 @@
 #ifndef QUICKSORT_H
 #define QUICKSORT_H
 
+#include <random>
+
 void quicksort(int sortMe[], int leftIndex, int rightIndex,
         int (*partitionFunc)(int*,int,int,int), int (*pivotFunc)(int*,int,int));
 

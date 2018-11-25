@@ -45,8 +45,7 @@ int hoarePartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex)
         do {
             --j;
         } while (partArr[j] > pivot);
-        if (i >= leftIndex && j <= rightIndex)
-            swap(partArr, i, j);
+        swap(partArr, i, j);
     }
     swap(partArr, i, j); // undo last swap when i >= j
     swap(partArr, leftIndex, j);
@@ -62,7 +61,14 @@ int basicPivot(int array[], int leftIndex, int rightIndex) {
 }
 
 int randomPivot(int array[], int leftIndex, int rightIndex) {
-    return 0;
+    // Generate a random number within the indices range
+    std::random_device seed;
+    std::mt19937 randGen(seed());
+    std::uniform_int_distribution<int> dist(leftIndex, rightIndex);
+    randGen.discard(3);
+    int pivotIndex = dist(randGen);
+    swap(array, leftIndex, pivotIndex);
+    return leftIndex;
 }
 
 
@@ -78,7 +84,8 @@ int medianOfThree(int array[], int leftIndex, int rightIndex) {
         swap(array, leftIndex, rightIndex);
     if (array[middle] > array[rightIndex])
         swap(array, middle, rightIndex);
-    // put pivot in left spot
+    // Put pivot in left spot. This is for the partition functions since they
+    // use the left index as the pivot.
     swap(array, leftIndex, middle);
     return leftIndex;
 }

@@ -4,7 +4,7 @@
 // the Quicksort algorithm using various pivot choosing strategies.
 
 #include <iostream>
-#include <random>
+//#include <random>
 #include "quicksort.h"
 
 int main() {
@@ -18,7 +18,7 @@ int main() {
         std::cout << testArr[i] << std::endl;
     }
     std::cout << "\n\n\nStarting sort..." << std::endl;
-    quicksort(testArr, 0, 50-1, hoarePartition, medianOfThree);
+    quicksort(testArr, 0, 50-1, hoarePartition, randomPivot);
     for (int i = 0; i < 50; ++i) {
         std::cout << testArr[i] << std::endl;
     }
