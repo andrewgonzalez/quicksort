@@ -14,13 +14,14 @@ typedef int (*partFunc)(int*,int,int,int);
 typedef int (*pivotFunc)(int*,int,int);
 
 // prototypes
-microseconds startSort(int array[], int arrSize,
-        int (*partitionFunc)(int*,int,int,int), int (*pivotFunc)(int*,int,int));
 partFunc determinePartition(char*);
 pivotFunc determinePivot(char*);
 void printArr(int *pInt, int arrSize);
 
 int main(int argc, char *argv[]) {
+    high_resolution_clock clock;
+    high_resolution_clock::time_point start;
+    high_resolution_clock::time_point end;
     int (*partitionFunc)(int*,int,int,int);
     int (*pivotFunc)(int*,int,int);
     int * sourceArray;
@@ -41,6 +42,7 @@ int main(int argc, char *argv[]) {
         pivotFunc = determinePivot(argv[2]);
     }
     else {
+        // default arguments
         partitionFunc = lomutoPartition;
         pivotFunc = basicPivot;
     }
@@ -48,6 +50,7 @@ int main(int argc, char *argv[]) {
     while (arrSize <= 10000) {
         sourceArray = new int[arrSize];
         copyArray = new int[arrSize];
+        timeTaken = microseconds::zero();
         // Fill source array with random numbers
         for (int i = 0; i < arrSize; ++i) {
             sourceArray[i] = dist(randGen);
@@ -56,7 +59,10 @@ int main(int argc, char *argv[]) {
         std::cout << "\n\nStarting sort..." << std::endl;
         for (int i = 0; i < 50; ++i) {
             std::copy(sourceArray, sourceArray + arrSize, copyArray);
-            timeTaken += startSort(copyArray, arrSize, partitionFunc, pivotFunc);
+            start = clock.now();
+            quicksort(copyArray, 0, arrSize - 1, partitionFunc, pivotFunc);
+            end = clock.now();
+            timeTaken += duration_cast<microseconds>(end - start);
         }
         timeTaken /= 50; // the average of 50 runs of quicksort
         std::cout << "Finished (size: " << arrSize << "): " << timeTaken.count() << " microseconds" << std::endl;
@@ -65,23 +71,6 @@ int main(int argc, char *argv[]) {
         arrSize += 100;
     }
     return 0;
-}
-
-
-// Run quicksort using the pivot and partition functions given.
-microseconds startSort(int array[], int arrSize,
-        int (*partitionFunc)(int*,int,int,int), int (*pivotFunc)(int*,int,int)) {
-    high_resolution_clock clock;
-    high_resolution_clock::time_point start;
-    high_resolution_clock::time_point end;
-    microseconds timeTaken;
-
-    start = clock.now();
-    quicksort(array, 0, arrSize - 1, partitionFunc, pivotFunc);
-    end = clock.now();
-    timeTaken += duration_cast<microseconds>(end - start);
-
-    return timeTaken;
 }
 
 
