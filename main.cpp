@@ -86,9 +86,9 @@ microseconds startSort(int array[], int arrSize,
 
 
 partFunc determinePartition(char * partition) {
-    if (strcmp("lomuto", partition))
+    if (strcmp("lomuto", partition) == 0)
         return lomutoPartition;
-    else if (strcmp("hoare", partition))
+    else if (strcmp("hoare", partition) == 0)
         return hoarePartition;
     // default to hoare partition if no match
     return hoarePartition;
@@ -96,13 +96,13 @@ partFunc determinePartition(char * partition) {
 
 
 pivotFunc determinePivot(char * pivot) {
-    if (strcmp("basic", pivot))
+    if (strcmp("basic", pivot) == 0)
         return basicPivot;
-    else if (strcmp("random", pivot))
+    else if (strcmp("random", pivot) == 0)
         return randomPivot;
-    else if (strcmp("m3", pivot))
+    else if (strcmp("m3", pivot) == 0)
         return medianOfThree;
-    else if (strcmp("mM", pivot))
+    else if (strcmp("mM", pivot) == 0)
         return medianOfMedians;
     // default to basic pivot if no match
     return basicPivot;
