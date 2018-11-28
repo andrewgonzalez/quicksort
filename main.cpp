@@ -4,6 +4,7 @@
 // the Quicksort algorithm using various pivot choosing strategies.
 
 #include <iostream>
+#include <fstream>
 #include <chrono>
 #include <algorithm>
 #include "quicksort.h"
@@ -14,19 +15,17 @@ typedef int (*partFunc)(int*,int,int,int);
 typedef int (*pivotFunc)(int*,int,int);
 
 // prototypes
-partFunc determinePartition(char*);
-pivotFunc determinePivot(char*);
+partFunc determinePartition(char*, char*);
+pivotFunc determinePivot(char*, char*);
 void printArr(int *pInt, int arrSize);
 
 int main(int argc, char *argv[]) {
-    high_resolution_clock clock;
-    high_resolution_clock::time_point start;
-    high_resolution_clock::time_point end;
     int (*partitionFunc)(int*,int,int,int);
     int (*pivotFunc)(int*,int,int);
     int * sourceArray;
     int * copyArray;
     int arrSize = 100;
+    char filename[25];
     // Using a Mersenne twister as the engine to generate random numbers.
     // This will generate uints, and I need ints, so I'm using the
     // uniform_int_distribution engine to transform the uints
@@ -34,18 +33,29 @@ int main(int argc, char *argv[]) {
     std::random_device seed;
     std::mt19937 randGen(seed());
     std::uniform_int_distribution<int> dist(0, INT32_MAX);
+    high_resolution_clock clock;
+    high_resolution_clock::time_point start;
+    high_resolution_clock::time_point end;
     // chrono::duration class template using microseconds
     microseconds timeTaken;
+    std::ofstream fout;
 
     if (3 == argc) {
-        partitionFunc = determinePartition(argv[1]);
-        pivotFunc = determinePivot(argv[2]);
+        partitionFunc = determinePartition(argv[1], filename);
+        pivotFunc = determinePivot(argv[2], filename);
     }
     else {
         // default arguments
         partitionFunc = lomutoPartition;
         pivotFunc = basicPivot;
+        strcat(filename, "lomuto");
+        strcat(filename, "basic");
     }
+
+    // open a file to print output to
+    strcat(filename, ".csv");
+    fout.open(filename, std::ofstream::out);
+    fout << "Array Size, Time (microseconds)" << "\n";
 
     while (arrSize <= 10000) {
         sourceArray = new int[arrSize];
@@ -66,34 +76,42 @@ int main(int argc, char *argv[]) {
         }
         timeTaken /= 50; // the average of 50 runs of quicksort
         std::cout << "Finished (size: " << arrSize << "): " << timeTaken.count() << " microseconds" << std::endl;
+        fout << arrSize << ", " << timeTaken.count() << "\n";
         delete[] copyArray;
         delete[] sourceArray;
         arrSize += 100;
     }
+    fout.close();
     return 0;
 }
 
 
-partFunc determinePartition(char * partition) {
-    if (strcmp("lomuto", partition) == 0)
+partFunc determinePartition(char * partition, char * filename) {
+    if (strcmp("lomuto", partition) == 0) {
+        strcat(filename, "lomuto");
         return lomutoPartition;
-    else if (strcmp("hoare", partition) == 0)
-        return hoarePartition;
+    }
     // default to hoare partition if no match
+    strcat(filename, "hoare");
     return hoarePartition;
 }
 
 
-pivotFunc determinePivot(char * pivot) {
-    if (strcmp("basic", pivot) == 0)
-        return basicPivot;
-    else if (strcmp("random", pivot) == 0)
+pivotFunc determinePivot(char * pivot, char * filename) {
+    if (strcmp("random", pivot) == 0) {
+        strcat(filename, "random");
         return randomPivot;
-    else if (strcmp("m3", pivot) == 0)
+    }
+    else if (strcmp("m3", pivot) == 0) {
+        strcat(filename, "m3");
         return medianOfThree;
-    else if (strcmp("mM", pivot) == 0)
+    }
+    else if (strcmp("mM", pivot) == 0) {
+        strcat(filename, "mM");
         return medianOfMedians;
+    }
     // default to basic pivot if no match
+    strcat(filename, "basic");
     return basicPivot;
 }
 

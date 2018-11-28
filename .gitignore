@@ -33,3 +33,4 @@
 
 # IDE config files
 **/.idea
+*.csv
