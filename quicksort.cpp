@@ -1,5 +1,6 @@
 //
-// Created by Andrew Gonzalez on 11/20/18.
+// Andrew Gonzalez
+// CS 350
 //
 
 #include "quicksort.h"
