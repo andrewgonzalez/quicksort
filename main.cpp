@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
     microseconds timeTaken;
     std::ofstream fout;
 
+    // Use command line arguments to determine which functions to use
     if (4 == argc) {
         partitionFunc = determinePartition(argv[1], filename);
         pivotFunc = determinePivot(argv[2], filename);
@@ -110,6 +111,10 @@ int main(int argc, char *argv[]) {
 }
 
 
+// Determine which partition algorithm the user entered at the command line.
+// Input: two c-style strings (char array), one for the partition to use for quicksort,
+// and a string to use for the filename respectively.
+// Output: a function pointer to the partition function to use.
 partFunc determinePartition(char * partition, char * filename) {
     if (strcmp("lomuto", partition) == 0) {
         strcat(filename, "lomuto");
@@ -121,6 +126,10 @@ partFunc determinePartition(char * partition, char * filename) {
 }
 
 
+// Determine which pivot algorithm the user entered at the command line.
+// Input: two c-style strings (char array), one for the pivot to use for quicksort,
+// and a string to use for the filename respectively.
+// Output: a function pointer to the pivot function to use.
 pivotFunc determinePivot(char * pivot, char * filename) {
     if (strcmp("random", pivot) == 0) {
         strcat(filename, "random");
@@ -140,6 +149,10 @@ pivotFunc determinePivot(char * pivot, char * filename) {
 }
 
 
+// Determine which array filling algorithm the user entered at the command line.
+// Input: two c-style strings (char array), one for the array fill to use for quicksort,
+// and a string to use for the filename respectively.
+// Output: a function pointer to the array filling function to use.
 fillArr determineArrayOrder(char * fillOrder, char * filename) {
     if (strcmp("sorted", fillOrder) == 0) {
         strcat(filename, "Sorted");
@@ -159,6 +172,9 @@ fillArr determineArrayOrder(char * fillOrder, char * filename) {
 }
 
 
+// Fill the passed in int array with random integers.
+// Input: an int array and an int for the array size.
+// Output: void
 void randomOrder(int *sourceArray, int arrSize) {
     // Using a Mersenne twister as the engine to generate random numbers.
     // This will generate uints, and I need ints, so I'm using the
@@ -174,6 +190,10 @@ void randomOrder(int *sourceArray, int arrSize) {
 }
 
 
+// Fill the passed in array with mostly sorted integers. Every 10th element
+// will have a random integer.
+// Input: an int array and an int for the array size.
+// Output: void
 void partialOrder(int *sourceArray, int arrSize) {
     int insertRandom = 10;
     std::random_device seed;
@@ -188,6 +208,9 @@ void partialOrder(int *sourceArray, int arrSize) {
 }
 
 
+// Fill the passed in array with sorted integers (ascending order).
+// Input: an int array and an int for the array size.
+// Output: void
 void sortedOrder(int *sourceArray, int arrSize) {
     // Fill source array with sorted data
     for (int i = 0; i < arrSize; ++i) {
@@ -196,6 +219,9 @@ void sortedOrder(int *sourceArray, int arrSize) {
 }
 
 
+// Fill the passed in array with reverse sorted integers (descending order).
+// Input: an int array and an int for the array size.
+// Output: void
 void reverseOrder(int *sourceArray, int arrSize) {
     int j;
     for (int i = 0; i < arrSize; ++i) {
@@ -205,6 +231,10 @@ void reverseOrder(int *sourceArray, int arrSize) {
 }
 
 
+// Checks if an array is sorted by comparing each element to the next. If the
+// current element is greater than the next, then the array is not sorted.
+// Input: an int array and an int for the array size.
+// Output: true if the array is sorted, false otherwise.
 bool checkCorrectness(int *checkArray, int arrSize) {
     bool isCorrect = true;
     for (int i = 0; isCorrect && i < arrSize - 1; ++i) {
@@ -215,6 +245,9 @@ bool checkCorrectness(int *checkArray, int arrSize) {
 }
 
 
+// Print the contents of an array to the standard output.
+// Input: an int array and an int for the array size.
+// Output: void
 void printArr(int *pInt, int arrSize) {
     for (int i = 0; i < arrSize; ++i)
         std::cout << pInt[i] << std::endl;

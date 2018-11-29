@@ -21,6 +21,11 @@ void quicksort(int sortMe[], int leftIndex, int rightIndex,
     }
 }
 
+
+// The Lomuto partition.
+// Input: an int array to partition, and 3 ints for the left, right, and pivot
+// indices respectively.
+// Output: and int of the index to split the array for sorting.
 int lomutoPartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex) {
     int pivot = partArr[pivotIndex];
     int current = leftIndex;
@@ -34,6 +39,11 @@ int lomutoPartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex
     return current;
 }
 
+
+// The Hoare partition.
+// Input: an int array to partition, and 3 ints for the left, right, and pivot
+// indices respectively.
+// Output: and int of the index to split the array for sorting.
 int hoarePartition(int partArr[], int leftIndex, int rightIndex, int pivotIndex) {
     int pivot = partArr[pivotIndex];
     int i = leftIndex;
@@ -95,8 +105,12 @@ int medianOfThree(int array[], int leftIndex, int rightIndex) {
 }
 
 
+// **NOT IMPLEMENTED**
+// Find the median of a list of medians.
+// Input: an array of integers and ints for the left and right indices respectively.
+// Output: an int to be used as a pivot index.
 int medianOfMedians(int array[], int leftIndex, int rightIndex) {
-    return 0;
+    return leftIndex;
 }
 
 
