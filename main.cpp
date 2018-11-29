@@ -33,9 +33,9 @@ int main(int argc, char *argv[]) {
     void (*fillArray)(int*,int);
     int * sourceArray;
     // beginning array size of 100 and max of 1 million
-    int arrSize = 100;
+    int arrSize = 1000;
     int maxSize = 1000000;
-    int loopCount = 50;
+    int loopCount = 20;
     char filename[35];
     bool verifySort = false;
 
@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
     // If we're going to verify that the sort works correctly then we don't need
     // to sort a bunch of huge arrays, just one array will do.
     if (verifySort) {
-        maxSize = 100;
+        maxSize = 1000;
         loopCount = 1;
     }
 
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
         }
 
         delete[] sourceArray;
-        arrSize += 100;
+        arrSize += 1000;
     }
     fout.close();
     return 0;
