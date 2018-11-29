@@ -23,33 +23,41 @@ void randomOrder(int *sourceArray, int arrSize);
 void partialOrder(int *sourceArray, int arrSize);
 void sortedOrder(int *sourceArray, int arrSize);
 void reverseOrder(int *sourceArray, int arrSize);
+bool checkCorrectness(int *checkArray, int arrSize);
 void printArr(int *pInt, int arrSize);
+
 
 int main(int argc, char *argv[]) {
     int (*partitionFunc)(int*,int,int,int);
     int (*pivotFunc)(int*,int,int);
     void (*fillArray)(int*,int);
     int * sourceArray;
-    int * copyArray;
+    // beginning array size of 100 and max of 1 million
     int arrSize = 100;
+    int maxSize = 1000000;
+    int loopCount = 50;
     char filename[35];
-    // chrono::duration class template using microseconds
+    bool verifySort = false;
+
     high_resolution_clock clock;
     high_resolution_clock::time_point start;
     high_resolution_clock::time_point end;
+    // chrono::duration class template using microseconds
     microseconds timeTaken;
     std::ofstream fout;
 
-    if (3 == argc) {
-        partitionFunc = determinePartition(argv[1], filename);
-        pivotFunc = determinePivot(argv[2], filename);
-        fillArray = randomOrder;
-        strcat(filename, "Random");
-    }
-    else if (4 == argc) {
+    if (4 == argc) {
         partitionFunc = determinePartition(argv[1], filename);
         pivotFunc = determinePivot(argv[2], filename);
         fillArray = determineArrayOrder(argv[3], filename);
+    }
+    else if (5 == argc) {
+        partitionFunc = determinePartition(argv[1], filename);
+        pivotFunc = determinePivot(argv[2], filename);
+        fillArray = determineArrayOrder(argv[3], filename);
+        if (strcmp("verify", argv[4]) == 0) {
+            verifySort = true;
+        }
     }
     else {
         // default arguments
@@ -66,24 +74,34 @@ int main(int argc, char *argv[]) {
     fout.open(filename, std::ofstream::out);
     fout << "Array Size, Time (microseconds)" << "\n";
 
-    while (arrSize <= 10000) {
-        sourceArray = new int[arrSize];
-        copyArray = new int[arrSize];
-        timeTaken = microseconds::zero();
-        fillArray(sourceArray, arrSize);
+    // If we're going to verify that the sort works correctly then we don't need
+    // to sort a bunch of huge arrays, just one array will do.
+    if (verifySort) {
+        maxSize = 100;
+        loopCount = 1;
+    }
 
-        std::cout << "\n\nStarting sort..." << std::endl;
-        for (int i = 0; i < 50; ++i) {
-            std::copy(sourceArray, sourceArray + arrSize, copyArray);
+    while (arrSize <= maxSize) {
+        sourceArray = new int[arrSize];
+        timeTaken = microseconds::zero();
+
+        for (int i = 0; i < loopCount; ++i) {
+            fillArray(sourceArray, arrSize);
             start = clock.now();
-            quicksort(copyArray, 0, arrSize - 1, partitionFunc, pivotFunc);
+            quicksort(sourceArray, 0, arrSize - 1, partitionFunc, pivotFunc);
             end = clock.now();
             timeTaken += duration_cast<microseconds>(end - start);
         }
-        timeTaken /= 50; // the average of 50 runs of quicksort
-        std::cout << "Finished (size: " << arrSize << "): " << timeTaken.count() << " microseconds" << std::endl;
+        timeTaken /= loopCount; // average the runs of quicksort
         fout << arrSize << ", " << timeTaken.count() << "\n";
-        delete[] copyArray;
+
+        if (verifySort) {
+            if (checkCorrectness(sourceArray, arrSize))
+                std::cout << argv[1] << " " << argv[2] << " " << argv[3] << " sorts correctly" << std::endl;
+            else
+                std::cout << argv[1] << " " << argv[2] << " " << argv[3] << " does not sort correctly" << std::endl;
+        }
+
         delete[] sourceArray;
         arrSize += 100;
     }
@@ -184,6 +202,16 @@ void reverseOrder(int *sourceArray, int arrSize) {
         j = arrSize - i;
         sourceArray[i] = j;
     }
+}
+
+
+bool checkCorrectness(int *checkArray, int arrSize) {
+    bool isCorrect = true;
+    for (int i = 0; isCorrect && i < arrSize - 1; ++i) {
+        if (checkArray[i] > checkArray[i+1])
+            isCorrect = false;
+    }
+    return isCorrect;
 }
 
 
