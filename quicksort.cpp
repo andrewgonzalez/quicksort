@@ -79,7 +79,6 @@ int randomPivot(int array[], int leftIndex, int rightIndex) {
     std::random_device seed;
     std::mt19937 randGen(seed());
     std::uniform_int_distribution<int> dist(leftIndex, rightIndex);
-    randGen.discard(3);
     int pivotIndex = dist(randGen);
     swap(array, leftIndex, pivotIndex);
     return leftIndex;

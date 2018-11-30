@@ -33,9 +33,9 @@ int main(int argc, char *argv[]) {
     void (*fillArray)(int*,int);
     int * sourceArray;
     // beginning array size of 100 and max of 1 million
-    int arrSize = 1000;
-    int maxSize = 1000000;
-    int loopCount = 20;
+    int arrSize = 100;
+    int maxSize = 10000;
+    int loopCount = 10;
     char filename[35];
     bool verifySort = false;
 
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
     // If we're going to verify that the sort works correctly then we don't need
     // to sort a bunch of huge arrays, just one array will do.
     if (verifySort) {
-        maxSize = 1000;
+        maxSize = 100;
         loopCount = 1;
     }
 
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
         }
 
         delete[] sourceArray;
-        arrSize += 1000;
+        arrSize += 100;
     }
     fout.close();
     return 0;
@@ -195,7 +195,7 @@ void randomOrder(int *sourceArray, int arrSize) {
 // Input: an int array and an int for the array size.
 // Output: void
 void partialOrder(int *sourceArray, int arrSize) {
-    int insertRandom = 10;
+    int insertRandom = 7;
     std::random_device seed;
     std::mt19937 randGen(seed());
     std::uniform_int_distribution<int> dist(0, INT32_MAX);
